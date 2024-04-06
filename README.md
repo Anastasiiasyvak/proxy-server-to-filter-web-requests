@@ -12,7 +12,8 @@
   ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/8f1a16f0-4748-49fb-a2df-99551e0e523e)
   
 - proxy_server.py - Цей Python-скрипт визначає, який HTML-файл відправити клієнту в залежності від результату обчислень. Він також відповідає за керування відображенням сторінок та інкрементуванням лічильника.
-- proxy-server.service - Файл служби systemd, який автоматично запускає проксі-сервер при запуску сервера Apache. Цей файл конфігурації вказує systemd на те, як запустити скрипт проксі-сервера. За допомогою `nano /etc/systemd/system/proxy-server.service` редагуємо файл.
+- proxy-server.service - файл служби systemd з назвою proxy-server.service у каталозі /etc/systemd/system/. Цей файл служби повинен автоматично запускати скрипт проксі-сервера (proxy_server.py) при запуску служби Apache2.
+Використовуємо команду, подібну до sudo nano /etc/systemd/system/proxy-server.service, щоб створити та редагувати файл служби.
   
 ## Процес виконання 
    - Створимо чистий контейнер Multipass на основі образу Ubuntu 22.04 за допомогою команди:
@@ -21,7 +22,7 @@
      ```
    - Встановлення необхідних інструментів
      ```
-     sudo apt update && sudo apt install socat && sudo apt install apache2 && sudo apt install iptables
+    sudo apt update -y && sudo apt install -y socat apache2 iptables
      ```
    - Змінюємо прослуховування з 80 на 20000
      ```
@@ -31,11 +32,14 @@
      ```
      sudo nano /etc/apache2/sites-enabled/000-default.conf
      ```
-   - 
-     ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/9c899d09-b20e-4644-99bb-82be6cd50aa4)
-   - Створюємо файли index.html та error.html
-   - Створюємо proxy_server.py
-   - Створюємо proxy-server.service
+   - Використовуємо iptables, щоб обмежити доступ до порту 20000, дозволяючи лише локальний доступ всередині контейнера.
+![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/f5fda9d5-5575-4ac3-80cc-b2906379f8e9)
+
+ ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/9c899d09-b20e-4644-99bb-82be6cd50aa4)
+   - Блокування порту 20000
+   - Копіюємо файли index.html та error.html
+   - Копіюємо proxy_server.py
+   - Копіюємо proxy-server.service
    - Спочатку ми запускаємо apache2
      ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/a780985c-c36b-4009-8ab5-68fedcd85bed)
    - Потім запускаємо proxy-server
@@ -44,4 +48,3 @@
    - ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/d641e8be-1372-4f94-8e5d-568425bd925c)
 
 
-  
