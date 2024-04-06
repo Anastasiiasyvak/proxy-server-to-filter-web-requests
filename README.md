@@ -22,7 +22,7 @@
      ```
    - Встановлення необхідних інструментів
      ```
-    sudo apt update -y && sudo apt install -y socat apache2 iptables
+     sudo apt update -y && sudo apt install -y socat apache2 iptables
      ```
    - Змінюємо прослуховування з 80 на 20000
      ```
