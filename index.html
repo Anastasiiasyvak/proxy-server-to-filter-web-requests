@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+        .message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">Congratulations! You've succeeded!</div>
+        <button class="button" onclick="showMemes()">View the greeting card </button>
+    </div>
+
+    <div id="memes" style="display: none;">
+        <div class="container">
+            <img src="https://i.chzbgr.com/full/8402107904/hB7809BF7/who-needs-success" alt="Success Image" width="400">
+            <div class="message">Would you like to order some champagne for celebration?</div>
+            <button class="button" onclick="orderChampagne()">Yes</button>
+            <button class="button" onclick="dontOrder()">No</button>
+        </div>
+    </div>
+
+    <div id="champagnePage" style="display: none;">
+        <div class="container">
+            <div class="message">Count of champagne glasses: <span id="count">0</span></div>
+            <button class="button" onclick="incrementCounter()">Order Champagne</button>
+        </div>
+    </div>
+
+    <script>
+        var count = 0;
+
+        function showMemes() {
+            var message = document.querySelector('.container');
+            message.style.display = 'none';
+            var memes = document.getElementById('memes');
+            memes.style.display = 'block';
+        }
+
+        function orderChampagne() {
+            var memes = document.getElementById('memes');
+            memes.style.display = 'none';
+            var champagnePage = document.getElementById('champagnePage');
+            champagnePage.style.display = 'block';
+        }
+
+        function dontOrder() {
+            var memes = document.getElementById('memes');
+            memes.style.display = 'none';
+            alert("Drinking is not necessary, let Leonardo DiCaprio drink for you!");
+            var img = document.createElement("img");
+            img.src = "https://i.pinimg.com/originals/3e/69/33/3e6933f1430c178465f64df11671c0e9.jpg";
+            img.width = 400;
+            document.body.appendChild(img);
+        }
+
+        function incrementCounter() {
+            count++;
+            document.getElementById('count').innerText = count;
+            if (count === 5) {
+                alert("This victory is not big enough to celebrate it with such enthusiasm as Ukraine's victory.");
+            }
+        }
+    </script>
+</body>
+</html>
