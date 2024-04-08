@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+        .message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">Task failed successfully</div>
+        <button class="button" onclick="showMemes()">OK</button>
+    </div>
+
+    <div id="memes" style="display: none;">
+        <div class="container">
+            <div class="message">Do you wanna see some memes?</div>
+            <button class="button" onclick="showMemePage()">Yes</button>
+            <button class="button" onclick="showMistake()">No</button>
+        </div>
+    </div>
+
+    <div id="memePage" style="display: none;">
+        <div class="container">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Gjpw2GQvgBbwxE9ffDDZF0tbymL6ePXevQ&s" alt="Meme Image" width="300">
+            <div class="message">Random error just to annoy you</div>
+            <div class="message" id="aaaMessage">AAAAAAAAAAAAA</div>
+            <button class="button" onclick="showError()">AAAAA</button>
+            <button class="button" onclick="showError()">AAAAAA</button>
+        </div>
+    </div>
+
+    <div id="errorAlert" style="display: none;">
+        <div class="container">
+            <div class="message">Error!</div>
+            <div class="message">Keyboard has stopped working. Press any key to continue.</div>
+            <button class="button" onclick="showAlert()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        function showMemes() {
+            var message = document.querySelector('.container');
+            message.style.display = 'none';
+            var memes = document.getElementById('memes');
+            memes.style.display = 'block';
+        }
+
+        function showMemePage() {
+            var memes = document.getElementById('memes');
+            memes.style.display = 'none';
+            var memePage = document.getElementById('memePage');
+            memePage.style.display = 'block';
+        }
+
+        function showMistake() {
+            alert("Mistake! You will see some memes anyway!");
+        }
+
+        function showError() {
+            var memePage = document.getElementById('memePage');
+            memePage.style.display = 'none';
+            var errorAlert = document.getElementById('errorAlert');
+            errorAlert.style.display = 'block';
+        }
+
+        function showAlert() {
+            alert("You've been told that buttons are not working. Why are you trying?");
+            showMemesImage();
+        }
+
+        function showMemesImage() {
+            var content = document.querySelector('body');
+            content.innerHTML = ""; 
+            var img = document.createElement("img");
+            img.src = "https://i.imgflip.com/2zynj6.jpg";
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            document.body.appendChild(img);
+        }
+    </script>
+</body>
+</html>
