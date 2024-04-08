@@ -2,7 +2,7 @@
 
 ## Короткий опис задачі
 
-У цьому завданні ми створювали проксі-сервер для фільтрації веб-запитів. Спочатку ми налаштували сервер Apache для роботи на порту 20000 замість стандартного порту 80, і обмежили доступ до цього порту лише локально в межах контейнера за допомогою iptables. Потім ми створили два HTML-файли - index.html та error.html, які мають відповідати веб-запитам. Далі був реалізований проксі-сервер, який в залежності від результату обчислень відправляв клієнту один з цих HTML-файлів. Нарешті, ми створили systemd service file для автоматичного запуску проксі-сервера після запуску сервера Apache.
+У цьому завданні ми створювали проксі-сервер для фільтрації веб-запитів. Спочатку налаштовували сервер Apache для роботи на порту 20000 замість стандартного порту 80 та обмежили доступ до цього порту лише локально в межах контейнера за допомогою iptables. Потім створили два HTML-файли - index.html та error.html, які мають відповідати веб-запитам. Далі був реалізований проксі-сервер, який в залежності від результату обчислень відправляв клієнту один з цих HTML-файлів. Нарешті, ми створили systemd service file для автоматичного запуску проксі-сервера після запуску сервера Apache.
 
 ## Файли 
 - index.html - HTML-файл, який містить вітання для користувача та посилання на сторінку проксі-сервера. Цей файл створено для відображення коректного веб-запиту.
@@ -14,37 +14,58 @@
 - proxy_server.py - Цей Python-скрипт визначає, який HTML-файл відправити клієнту в залежності від результату обчислень. Він також відповідає за керування відображенням сторінок та інкрементуванням лічильника.
 - proxy-server.service - файл служби systemd з назвою proxy-server.service у каталозі /etc/systemd/system/. Цей файл служби повинен автоматично запускати скрипт проксі-сервера (proxy_server.py) при запуску служби Apache2.
 Використовуємо команду, подібну до sudo nano /etc/systemd/system/proxy-server.service, щоб створити та редагувати файл служби.
+- setup.sh - Цей файл містить команди для автоматичного налаштування сервера та його компонентів. Він виконує такі дії:
+1. Оновлення та встановлення необхідних пакетів: socat, apache2, iptables.
+2. Зміна прослуховування з порту 80 на порт 20000 у файлі ports.conf Apache.
+3. Зміна Virtual Host з порту 80 на порт 20000 у файлі 000-default.conf Apache.
+4. Використання iptables для обмеження доступу до порту 20000, дозволяючи лише локальний доступ всередині контейнера.
   
 ## Процес виконання 
    - Створимо чистий контейнер Multipass на основі образу Ubuntu 22.04 за допомогою команди:
      ```
      multipass launch 22.04 --name=second-homework
      ```
-   - Встановлення необхідних інструментів
+   - За допомогою файла setup.py маємо автоматично встановлені команди
      ```
-     sudo apt update -y && sudo apt install -y socat apache2 iptables
+     nano setup.py
      ```
-   - Змінюємо прослуховування з 80 на 20000
+   - Надаємо право execute file
      ```
-     sudo nano /etc/apache2/ports.conf
+     chmod +x setup.py
      ```
-   - Змінюємо Virtual Host з 80 на 20000
+   - ```
+     sudo python3 setup.py
      ```
-     sudo nano /etc/apache2/sites-enabled/000-default.conf
+   - За допомогою наступної команди, можемо перевірити чи правильно встановлені права для iptables
      ```
-   - Використовуємо iptables, щоб обмежити доступ до порту 20000, дозволяючи лише локальний доступ всередині контейнера.
-![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/f5fda9d5-5575-4ac3-80cc-b2906379f8e9)
-
+     sudo iptables -L
+     ```
+    
  ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/9c899d09-b20e-4644-99bb-82be6cd50aa4)
-   - Блокування порту 20000
-   - Копіюємо файли index.html та error.html
-   - Копіюємо proxy_server.py
-   - Копіюємо proxy-server.service
+ 
+   - Редагуємо файли index.html та error.html
+   - Копіюємо proxy_server.py 
    - Спочатку ми запускаємо apache2
+     ```
+     sudo systemctl start apache2
+     ```
+     та перевіряємо статус, у нашому випадку все добре і все запущено 
+     ```
+     sudo systemctl status apache2
+     ```
      ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/a780985c-c36b-4009-8ab5-68fedcd85bed)
    - Потім запускаємо proxy-server
+      ```
+      sudo systemctl start proxy-server
+      ```
+      перевіряємо статус
+      ```
+      sudo systemctl status proxy-server
+      ```
      ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/502c1506-cca0-445b-a16e-cd4e6e89ecbc)
 
+   - перевіряємо чи все працює
+   ```
+   curl http://localhost:20000
+   ```
    - ![image](https://github.com/Anastasiiasyvak/proxy-server-to-filter-web-requests/assets/119412566/d641e8be-1372-4f94-8e5d-568425bd925c)
-
-
