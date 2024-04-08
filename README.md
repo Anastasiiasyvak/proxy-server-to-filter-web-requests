@@ -47,7 +47,7 @@
    - Копіюємо proxy_server.py 
    - Спочатку ми запускаємо apache2
      ```
-     sudo systemctl start apache2
+     sudo systemctl restart apache2
      ```
      та перевіряємо статус, у нашому випадку все добре і все запущено 
      ```
