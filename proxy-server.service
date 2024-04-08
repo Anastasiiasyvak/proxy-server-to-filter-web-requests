@@ -1,0 +1,12 @@
+[Unit]
+Description=Socat Proxy Server
+After=apache2.service
+Requires=apache2.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat TCP-LISTEN:80,fork,pktinfo exec:/home/ubuntu/proxy_server.py
+
+
+[Install]
+WantedBy=multi-user.target
